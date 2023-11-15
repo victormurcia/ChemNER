@@ -240,7 +240,7 @@ if st.button("Run NER"):
         # Generate and display the plot
         # Generate and save the plot as an image
         create_and_save_count_plot(df_merged, 'Label', filename='plot.png', width=10, height=8)
-        st.image('plot.png',width=50)
+        st.image('plot.png',width=500)
 
     st.title("NER Visualization")
     # Create a filtered Doc for visualization
