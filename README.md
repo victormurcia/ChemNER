@@ -28,10 +28,12 @@ https://huggingface.co/victormurcia/en_chemner
 
 ## Using spacy.load().
 import spacy
+
 nlp = spacy.load("en_chemner")
 
 ## Importing as module.
 import en_chemner
+
 nlp = en_chemner.load()
 
 # Questions/Bugs
