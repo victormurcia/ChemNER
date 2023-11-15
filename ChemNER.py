@@ -236,7 +236,7 @@ if st.button("Run NER"):
     col1, col2 = st.columns(2)
 
     with col1:
-         st.header("NER Dataframe")
+        st.header("NER Dataframe")
         # Display the final DataFrame
         st.write(df_merged)
 
