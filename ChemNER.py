@@ -184,6 +184,9 @@ wiki_wiki = wikipediaapi.Wikipedia(user_agent,'en')
 # List of specific chemical compound types
 chemical_compounds = ['alkane', 'alkene', 'alkyne', 'ketone', 'aldehyde', 'alcohol', 'carboxylic acid']
 
+#Set page layout
+st.set_page_config(layout="wide")
+
 # Streamlit app layout
 st.title("ChemNER: An NER Model for Extracting Chemical Compounds From Text")
 
