@@ -169,4 +169,4 @@ if st.button("Run NER"):
     df_merged = df_merged[df_merged['Chemical Compound'] != 0].reset_index()
 
     # Display the final DataFrame
-    st.write(df)
+    st.write(df_merged)
