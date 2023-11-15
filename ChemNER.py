@@ -109,6 +109,10 @@ def update_chemical_compound(row):
         return 1
     return row['Chemical Compound']
 
+# Function to convert DataFrame to CSV
+def convert_df_to_csv(df):
+    return df.to_csv(index=False).encode('utf-8')
+    
 #Initialize ChemNER Model
 chemner = spacy.load("en_chemner")
 
@@ -170,3 +174,13 @@ if st.button("Run NER"):
 
     # Display the final DataFrame
     st.write(df_merged)
+
+    # After processing and obtaining results_df
+if 'df_merged' in locals():  # Check if results_df exists
+    csv = convert_df_to_csv(df_merged)
+    st.download_button(
+        label="Download results as CSV",
+        data=csv,
+        file_name='chemner_results.csv',
+        mime='text/csv',
+    )
