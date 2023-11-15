@@ -115,7 +115,7 @@ def convert_df_to_csv(df):
     return df.to_csv(index=False).encode('utf-8')
 
 def visualize_ner(text):
-    doc = nlp(text)
+    doc = chemner(text)
     html = displacy.render(doc, style="ent")
     return html
     
