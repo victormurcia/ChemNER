@@ -153,27 +153,15 @@ def visualize_ner(filtered_doc):
     html = displacy.render(filtered_doc, style="ent", options=options)
     return html
 
-def create_count_plot(df, column_name, width=8, height=6):
-    """
-    Creates and returns a Matplotlib figure for a count plot based on the specified column,
-    with the given width and height.
-
-    Parameters:
-    df (pd.DataFrame): DataFrame containing the data.
-    column_name (str): Column name to be used for count plot.
-    width (int, optional): Width of the plot. Default is 8.
-    height (int, optional): Height of the plot. Default is 6.
-
-    Returns:
-    matplotlib.figure.Figure: Matplotlib figure object with the count plot.
-    """
+def create_and_save_count_plot(df, column_name, filename='plot.png', width=8, height=6):
     plt.figure(figsize=(width, height))
     sns.countplot(x=column_name, data=df, palette='rocket')
     plt.title('Count of NER Labels')
     plt.xlabel('Label')
     plt.ylabel('Count')
     plt.tight_layout()
-    return plt.gcf()  # Return the current figure object (gcf)
+    plt.savefig(filename)
+    plt.close()  # Close the plot to free up memory
     
 #Initialize ChemNER Model
 chemner = spacy.load("en_chemner")
@@ -250,8 +238,9 @@ if st.button("Run NER"):
         st.header("NER Label Distribution")
         
         # Generate and display the plot
-        count_plot = create_count_plot(df_merged, 'Label')
-        st.pyplot(count_plot)
+        # Generate and save the plot as an image
+        create_and_save_count_plot(df_entities, 'Label', filename='plot.png', width=10, height=8)
+        st.image('plot.png')
 
     st.title("NER Visualization")
     # Create a filtered Doc for visualization
