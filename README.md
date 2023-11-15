@@ -24,6 +24,8 @@ There are a variety of ways to access the model. The model is hosted in HuggingF
 
 https://huggingface.co/victormurcia/en_chemner
 
+You can also install it in your environment using pip as shown below and then load it via one of the 2 methods below:
+
 !pip install https://huggingface.co/victormurcia/en_chemner/resolve/main/en_chemner-any-py3-none-any.whl
 
 ## Using spacy.load().
