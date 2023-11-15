@@ -153,7 +153,7 @@ def visualize_ner(filtered_doc):
     html = displacy.render(filtered_doc, style="ent", options=options)
     return html
 
-def create_and_save_count_plot(df, column_name, filename='plot.png', width=8, height=6):
+def create_and_save_count_plot(df, column_name, filename='plot.png', width=6, height=4):
     plt.figure(figsize=(width, height))
     sns.countplot(x=column_name, data=df, palette='rocket')
     plt.title('Count of NER Labels')
