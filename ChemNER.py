@@ -113,6 +113,30 @@ def update_chemical_compound(row):
 # Function to convert DataFrame to CSV
 def convert_df_to_csv(df):
     return df.to_csv(index=False).encode('utf-8')
+    
+def filter_doc_for_chemical_compounds(doc, df_filtered):
+    """
+    Create a new spaCy Doc containing only entities identified as chemical compounds.
+
+    Parameters:
+    doc (spacy.Doc): Original spaCy Doc object with NER annotations.
+    df_filtered (pd.DataFrame): DataFrame containing filtered entities identified as chemical compounds.
+
+    Returns:
+    spacy.Doc: New spaCy Doc object with only chemical compound entities.
+    """
+    from spacy.tokens import Span
+
+    # Filter entities based on DataFrame
+    filtered_entities = []
+    for ent in doc.ents:
+        if ent.text in df_filtered['Entity'].values:
+            filtered_entities.append(Span(doc, ent.start, ent.end, label=ent.label_))
+
+    # Create a new Doc with the filtered entities
+    filtered_doc = spacy.tokens.Doc(doc.vocab, words=[t.text for t in doc], spaces=[t.whitespace_ for t in doc])
+    filtered_doc.ents = filtered_entities
+    return filtered_doc
 
 def visualize_ner(text):
     # Define colors for chemical entity types
@@ -167,7 +191,7 @@ if st.button("Run NER"):
     if text:
         # Perform NER on the article content
         entities = run_chemner(text)
-        html = visualize_ner(text)
+        #html = visualize_ner(text)
         st.write('Article found')
     else:
         st.write('Article not found')
@@ -191,6 +215,11 @@ if st.button("Run NER"):
     df_merged = df_merged[df_merged['Chemical Compound'] != 0].reset_index()
 
     st.title("NER Visualization")
+    # Create a filtered Doc for visualization
+
+    doc = chemner(text)
+    filtered_doc = filter_doc_for_chemical_compounds(doc, df_merged)
+    html = visualize_ner(filtered_doc)
     st.markdown(html, unsafe_allow_html=True)
 
     # Display the final DataFrame
