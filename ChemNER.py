@@ -124,9 +124,9 @@ if st.button("Run NER"):
     if text:
         # Perform NER on the article content
         entities = run_chemner(text)
-        print(entities)
+        st.write('Article found')
     else:
-        print("Article not found.")
+        st.write('Article not found')
 
     # Create DataFrame to hold entities and their labels
     df = pd.DataFrame(entities, columns=['Entity', 'Label'])
