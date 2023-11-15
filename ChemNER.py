@@ -153,18 +153,21 @@ def visualize_ner(filtered_doc):
     html = displacy.render(filtered_doc, style="ent", options=options)
     return html
 
-def create_count_plot(df, column_name):
+def create_count_plot(df, column_name, width=8, height=6):
     """
-    Creates and returns a Matplotlib figure for a count plot based on the specified column.
+    Creates and returns a Matplotlib figure for a count plot based on the specified column,
+    with the given width and height.
 
     Parameters:
     df (pd.DataFrame): DataFrame containing the data.
     column_name (str): Column name to be used for count plot.
+    width (int, optional): Width of the plot. Default is 8.
+    height (int, optional): Height of the plot. Default is 6.
 
     Returns:
     matplotlib.figure.Figure: Matplotlib figure object with the count plot.
     """
-    plt.figure(figsize=(8, 6))
+    plt.figure(figsize=(width, height))
     sns.countplot(x=column_name, data=df, palette='rocket')
     plt.title('Count of NER Labels')
     plt.xlabel('Label')
