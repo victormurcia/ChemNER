@@ -156,6 +156,7 @@ if st.button("Run NER"):
     if text:
         # Perform NER on the article content
         entities = run_chemner(text)
+        html = visualize_ner(text)
         st.write('Article found')
     else:
         st.write('Article not found')
@@ -178,6 +179,9 @@ if st.button("Run NER"):
     # Dropping rows where 'Chemical Compound' is 0
     df_merged = df_merged[df_merged['Chemical Compound'] != 0].reset_index()
 
+    st.title("NER Visualization")
+    st.markdown(html, unsafe_allow_html=True)
+
     # Display the final DataFrame
     st.write(df_merged)
 
@@ -190,11 +194,3 @@ if 'df_merged' in locals():  # Check if results_df exists
         file_name='chemner_results.csv',
         mime='text/csv',
     )
-
-st.title("NER Visualization")
-
-if st.button("Visualize Entities"):
-    if text:
-        html = visualize_ner(text)
-        # Display the visualization
-        st.markdown(html, unsafe_allow_html=True)
