@@ -152,6 +152,25 @@ def visualize_ner(filtered_doc):
     options = {"ents": list(entity_colors.keys()), "colors": entity_colors}
     html = displacy.render(filtered_doc, style="ent", options=options)
     return html
+
+def create_count_plot(df, column_name):
+    """
+    Creates and returns a Matplotlib figure for a count plot based on the specified column.
+
+    Parameters:
+    df (pd.DataFrame): DataFrame containing the data.
+    column_name (str): Column name to be used for count plot.
+
+    Returns:
+    matplotlib.figure.Figure: Matplotlib figure object with the count plot.
+    """
+    plt.figure(figsize=(8, 6))
+    sns.countplot(x=column_name, data=df, palette='rocket')
+    plt.title('Count of NER Labels')
+    plt.xlabel('Label')
+    plt.ylabel('Count')
+    plt.tight_layout()
+    return plt.gcf()  # Return the current figure object (gcf)
     
 #Initialize ChemNER Model
 chemner = spacy.load("en_chemner")
@@ -213,16 +232,27 @@ if st.button("Run NER"):
     # Dropping rows where 'Chemical Compound' is 0
     df_merged = df_merged[df_merged['Chemical Compound'] != 0].reset_index()
 
+    # Creating two columns for side by side display
+    col1, col2 = st.columns(2)
+
+    with col1:
+         st.header("NER Dataframe")
+        # Display the final DataFrame
+        st.write(df_merged)
+
+    with col2:
+        st.header("NER Label Distribution")
+        
+        # Generate and display the plot
+        count_plot = create_count_plot(df_merged, 'Label')
+        st.pyplot(count_plot)
+
     st.title("NER Visualization")
     # Create a filtered Doc for visualization
-
     doc = chemner(text)
     filtered_doc = filter_doc_for_chemical_compounds(doc, df_merged)
     html = visualize_ner(filtered_doc)
     st.markdown(html, unsafe_allow_html=True)
-
-    # Display the final DataFrame
-    st.write(df_merged)
 
     # After processing and obtaining results_df
 if 'df_merged' in locals():  # Check if results_df exists
