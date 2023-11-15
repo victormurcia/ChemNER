@@ -2,6 +2,7 @@ import spacy
 from spacy.pipeline import EntityRuler
 from sklearn.model_selection import train_test_split
 from spacy.tokens import DocBin
+from spacy import displacy
 import seaborn as sns
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -112,6 +113,11 @@ def update_chemical_compound(row):
 # Function to convert DataFrame to CSV
 def convert_df_to_csv(df):
     return df.to_csv(index=False).encode('utf-8')
+
+def visualize_ner(text):
+    doc = nlp(text)
+    html = displacy.render(doc, style="ent")
+    return html
     
 #Initialize ChemNER Model
 chemner = spacy.load("en_chemner")
@@ -184,3 +190,11 @@ if 'df_merged' in locals():  # Check if results_df exists
         file_name='chemner_results.csv',
         mime='text/csv',
     )
+
+st.title("NER Visualization")
+
+if st.button("Visualize Entities"):
+    if text:
+        html = visualize_ner(text)
+        # Display the visualization
+        st.markdown(html, unsafe_allow_html=True)
