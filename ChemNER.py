@@ -138,7 +138,7 @@ def filter_doc_for_chemical_compounds(doc, df_filtered):
     filtered_doc.ents = filtered_entities
     return filtered_doc
 
-def visualize_ner(text):
+def visualize_ner(filtered_doc):
     # Define colors for chemical entity types
     entity_colors = {
         "ALKANE": "linear-gradient(90deg, #ffadad, #ffd6a5)",
@@ -149,9 +149,8 @@ def visualize_ner(text):
         "ALCOHOL": "linear-gradient(90deg, #ffafcc, #f9c6aa)",
         "C_ACID": "linear-gradient(90deg, #8ecae6, #219ebc)"
     }
-    doc = chemner(text)
     options = {"ents": list(entity_colors.keys()), "colors": entity_colors}
-    html = displacy.render(doc, style="ent", options=options)
+    html = displacy.render(filtered_doc, style="ent", options=options)
     return html
     
 #Initialize ChemNER Model
