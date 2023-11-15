@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import requests
 import wikipediaapi
 import streamlit as st
+import urllib.parse
 
 def get_compound_info(compound_name):
     """
@@ -42,23 +43,37 @@ def query_pubchem(row):
     """
     return get_compound_info(row['Entity'])
 
-def get_wikipedia_article(page_title):
+def get_wikipedia_article(input_string):
     """
-    Retrieve the text of a Wikipedia article based on its title.
+    Retrieve the text of a Wikipedia article based on its title or URL.
 
-    This function uses the wikipediaapi library to fetch the content of a
-    Wikipedia article. It returns the text of the article if it exists,
-    otherwise it returns None.
+    If the input is a valid Wikipedia article URL, the function parses the title
+    from the URL. Otherwise, it treats the input as a page title. It then uses
+    the wikipediaapi library to fetch the content of the Wikipedia article.
+    It returns the text of the article if it exists, otherwise it returns None.
 
     Parameters:
-    page_title (str): The title of the Wikipedia article to retrieve.
+    input_string (str): The title or URL of the Wikipedia article to retrieve.
 
     Returns:
     str or None: The text of the Wikipedia article, or None if the page does not exist.
     """
-    page = wiki_wiki.page(page_title)
-    return page.text if page.exists() else None
+    if input_string.startswith("http://") or input_string.startswith("https://"):
+        # Input is a URL, extract the title
+        parsed_url = urllib.parse.urlparse(input_string)
+        if 'wikipedia.org' not in parsed_url.netloc:
+            raise ValueError("URL does not belong to Wikipedia.")
+        
+        title = parsed_url.path.split('/')[-1]
+        title = urllib.parse.unquote(title)  # Decode URL-encoded title
+    else:
+        # Input is assumed to be a page title
+        title = input_string
 
+    # Fetch the article text
+    page = wiki_wiki.page(title)
+    return page.text if page.exists() else None
+    
 def run_chemner(text):
     """
     Perform Named Entity Recognition (NER) with ChemNER model on a given text.
@@ -109,15 +124,22 @@ chemical_compounds = ['alkane', 'alkene', 'alkyne', 'ketone', 'aldehyde', 'alcoh
 # Streamlit app layout
 st.title("ChemNER: An NER Model for Extracting Chemical Compounds From Text")
 
-# User input for text or Wikipedia URL
-user_input = st.text_input("Enter text or Wikipedia article URL:")
+# Checkbox for user to choose between raw input or Wikipedia URL
+is_wikipedia_url = st.checkbox("Fetch text from Wikipedia URL")
+
+# User input for text or Wikipedia URL based on checkbox
+if is_wikipedia_url:
+    user_input = st.text_input("Enter Wikipedia article URL:")
+else:
+    user_input = st.text_area("Enter text directly:")
 
 # Button to run the process
 if st.button("Run NER"):
-    # Check if input is a Wikipedia URL or text
-    if "wikipedia.org" in user_input:
+    if is_wikipedia_url:
+        # Fetch text from Wikipedia if checkbox is selected
         text = get_wikipedia_article(user_input)
     else:
+        # Use raw user input
         text = user_input
 
     #Check whether an article was found for the given search term
