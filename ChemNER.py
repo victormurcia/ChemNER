@@ -150,7 +150,7 @@ def visualize_ner(filtered_doc):
         "C_ACID": "linear-gradient(90deg, #8ecae6, #219ebc)"
     }
     options = {"ents": list(entity_colors.keys()), "colors": entity_colors}
-    html = displacy.render(filtered_doc, style="ent", options=options)
+    html = displacy.render(filtered_doc, style="ent", options=options,page=True)
     return html
 
 def create_and_save_count_plot(df, column_name, filename='plot.png', width=6, height=4):
