@@ -115,8 +115,19 @@ def convert_df_to_csv(df):
     return df.to_csv(index=False).encode('utf-8')
 
 def visualize_ner(text):
+    # Define colors for chemical entity types
+    entity_colors = {
+        "ALKANE": "linear-gradient(90deg, #ffadad, #ffd6a5)",
+        "ALKENE": "linear-gradient(90deg, #fdffb6, #caffbf)",
+        "ALKYNE": "linear-gradient(90deg, #9bf6ff, #a0c4ff)",
+        "ALDEHYDE": "linear-gradient(90deg, #bdb2ff, #ffc6ff)",
+        "KETONE": "linear-gradient(90deg, #fffffc, #a5f2e9)",
+        "ALCOHOL": "linear-gradient(90deg, #ffafcc, #f9c6aa)",
+        "C_ACID": "linear-gradient(90deg, #8ecae6, #219ebc)"
+    }
     doc = chemner(text)
-    html = displacy.render(doc, style="ent")
+    options = {"ents": list(colors.keys()), "colors": entity_colors}
+    html = displacy.render(doc, style="ent", options=options)
     return html
     
 #Initialize ChemNER Model
