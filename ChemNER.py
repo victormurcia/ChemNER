@@ -126,7 +126,7 @@ def visualize_ner(text):
         "C_ACID": "linear-gradient(90deg, #8ecae6, #219ebc)"
     }
     doc = chemner(text)
-    options = {"ents": list(colors.keys()), "colors": entity_colors}
+    options = {"ents": list(entity_colors.keys()), "colors": entity_colors}
     html = displacy.render(doc, style="ent", options=options)
     return html
     
