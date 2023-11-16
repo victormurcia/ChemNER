@@ -8,7 +8,9 @@ A custom NER model for extracting and labeling chemical compounds from text. Thi
 * KETONE
 * CAROBOXYLIC ACID (C_ACID)
 
-The model has been deployed in a Streamlit application [ChemNER App](https://chemner-5i7mrvyelw79tzasxwy96x.streamlit.app/) that also performs Named Entity Linking (NEL) via the PubChem API in order to improve the labeling accuracy by removing entities that are not chemical compounds.
+You can access the ChemNER model in HuggingFace https://huggingface.co/victormurcia/en_chemner
+
+The model has also been deployed in a Streamlit application [ChemNER App](https://chemner-5i7mrvyelw79tzasxwy96x.streamlit.app/) that also performs Named Entity Linking (NEL) via the PubChem API in order to improve the labeling accuracy by removing entities that are not chemical compounds.
 
 The Streamlit app also provides an annotation visualization for the uploaded text that has color coded labels for all the extracted entities. 
 
